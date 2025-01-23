@@ -1,0 +1,10 @@
+name: thesis
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python>=3.9,<3.12
+  - pip
+  - pip:
+      - resolv-pipelines[tensorflow] @ git+ssh://git@github.com/resolv-libs/resolv-pipelines.git@main
+      - git+ssh://git@github.com/resolv-libs/resolv-ml.git@main
