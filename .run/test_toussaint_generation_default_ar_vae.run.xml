@@ -1,0 +1,26 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="test_toussaint_generation_default_ar_vae" type="PythonConfigurationType" factoryName="Python" folderName="Test - Default AR-VAE" editBeforeRun="true">
+    <module name="box-cox-latent-reg" />
+    <option name="ENV_FILES" value="" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+    </envs>
+    <option name="SDK_HOME" value="" />
+    <option name="SDK_NAME" value="box-cox-latent-reg" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="IS_MODULE_SDK" value="false" />
+    <option name="ADD_CONTENT_ROOTS" value="true" />
+    <option name="ADD_SOURCE_ROOTS" value="true" />
+    <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/test/test_model_generation.py" />
+    <option name="PARAMETERS" value="--model-path=&quot;./output/training/default-ar-vae/toussaint/gamma-1.0/checkpoints/epoch_40-val_loss_0.3724.keras&quot; --test-dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/test/*.tfrecord&quot; --output-path=&quot;./output/tests/models/default-ar-vae/toussaint/gamma-1.0&quot; --dataset-cardinality=22265 --control-reg-dim --num-midi-to-save=1000 --sequence-length=64 --attributes=&quot;toussaint&quot; --regularized-dimension=0 --batch-size=512 --seed=42 --logging-level=&quot;INFO&quot;" />
+    <option name="SHOW_COMMAND_LINE" value="false" />
+    <option name="EMULATE_TERMINAL" value="false" />
+    <option name="MODULE_MODE" value="false" />
+    <option name="REDIRECT_INPUT" value="false" />
+    <option name="INPUT_FILE" value="" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -109,30 +109,6 @@ def test_power_transform(args):
                          f"Remove the folder {main_output_path} to override it.")
 
 
-def test_original_distributions(args):
-    for attribute in args.attributes:
-        logging.info(f"Evaluating original distribution for attribute '{attribute}'...")
-        output_path = Path(args.histogram_output_path) / "original" / attribute
-        if not output_path.exists():
-            attribute_data = utilities.load_flat_dataset(dataset_path=args.dataset_path,
-                                                         sequence_length=args.sequence_length,
-                                                         attribute=attribute,
-                                                         batch_size=args.batch_size,
-                                                         parse_sequence_feature=False)
-            zero_mask = np.isclose(attribute_data, 0)
-            zero_count = np.count_nonzero(zero_mask)
-            if args.remove_outlier:
-                outlier_mask = np.where(np.logical_not(zero_mask))
-                attribute_data = attribute_data[outlier_mask]
-            logging.info(f"Original zero elements: {zero_count}/{len(attribute_data)}")
-            norm_attr_data = (attribute_data - k_ops.mean(attribute_data)) / k_ops.std(attribute_data)
-            plot_original_distributions(norm_attr_data.numpy(), output_path, attribute, args.histogram_bins,
-                                        args.overlap_gauss_orig)
-        else:
-            logging.info(f"Original distribution for attribute '{attribute}' already exists. "
-                         f"Remove the folder {output_path} to override it.")
-
-
 def negentropy_approx_naive(x):
     return (1 / 12) * np.mean(x ** 3) ** 2 + (1 / 48) * kurtosis(x) ** 2
 
@@ -141,31 +117,6 @@ def negentropy_approx_fn(x, fn: Callable):
     gaussian_data = np.random.normal(0, 1, x.shape[0])
     negentropy = (np.mean(fn(x)) - np.mean(fn(gaussian_data))) ** 2
     return negentropy
-
-
-@mpl.rc_context({'text.usetex': True, 'font.family': 'serif', 'font.size': 20, 'font.serif': 'Computer Modern Roman',
-                 'lines.linewidth': 1.5})
-def plot_original_distributions(data,
-                                output_path: Path,
-                                attribute: str,
-                                histogram_bins: List[int],
-                                overlap_gaussian: bool = False):
-    histograms_output_path = output_path / "histograms"
-    histograms_output_path.mkdir(parents=True, exist_ok=True)
-    x = np.linspace(-4, 4, data.shape[0])
-    standard_gauss = norm.pdf(x, 0, 1)
-    for n_bins in histogram_bins:
-        filename = f'{str(histograms_output_path)}/histogram_original_{attribute}_{n_bins}_bins.png'
-        logging.info(f"Plotting original histogram with {n_bins} bins for attribute {attribute}...")
-        counts, bins = np.histogram(data, bins=n_bins)
-        weights = (counts / np.max(counts)) * 0.45
-        plt.hist(bins[:-1], bins=n_bins, weights=weights, color='#4c92c3')
-        if overlap_gaussian:
-            plt.plot(x, standard_gauss, 'r-', linewidth=2)
-        plt.grid(axis='y', linestyle=':')
-        plt.tight_layout()
-        plt.savefig(filename, format='png', dpi=300)
-        plt.close()
 
 
 @mpl.rc_context({'text.usetex': True, 'font.family': 'serif', 'font.size': 20, 'font.serif': 'Computer Modern Roman',
@@ -245,5 +196,4 @@ if __name__ == '__main__':
         np.random.seed(vargs.seed)
         tf.config.experimental.enable_op_determinism()
     logging.getLogger().setLevel(vargs.logging_level)
-    test_original_distributions(vargs)
     test_power_transform(vargs)

@@ -1,0 +1,26 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="test_pitch_range_pt" type="PythonConfigurationType" factoryName="Python" folderName="Test PTs" editBeforeRun="true">
+    <module name="box-cox-latent-reg" />
+    <option name="ENV_FILES" value="" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+    </envs>
+    <option name="SDK_HOME" value="" />
+    <option name="SDK_NAME" value="box-cox-latent-reg" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="IS_MODULE_SDK" value="false" />
+    <option name="ADD_CONTENT_ROOTS" value="true" />
+    <option name="ADD_SOURCE_ROOTS" value="true" />
+    <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/test/test_power_transforms.py" />
+    <option name="PARAMETERS" value="--dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/train/*.tfrecord&quot; --sequence-length=64 --attributes pitch_range --histogram-output-path=&quot;./output/tests/datasets/4bars_melodies_big/distributions/train&quot; --histogram-bins 60 70 80 90 100 110 120 --batch-size=512 --shift-grid-search --shift-min=0.14 --shift-max=0.15 --shift-step=0.01 --seed=42" />
+    <option name="SHOW_COMMAND_LINE" value="false" />
+    <option name="EMULATE_TERMINAL" value="false" />
+    <option name="MODULE_MODE" value="false" />
+    <option name="REDIRECT_INPUT" value="false" />
+    <option name="INPUT_FILE" value="" />
+    <method v="2" />
+  </configuration>
+</component>
