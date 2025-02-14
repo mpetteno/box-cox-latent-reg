@@ -31,7 +31,6 @@ def test_power_transform(args):
             if args.remove_outlier:
                 outlier_mask = np.where(np.logical_not(np.isclose(attribute_data, 0)))
                 attribute_data = attribute_data[outlier_mask]
-            norm_attribute_data = (attribute_data - k_ops.mean(attribute_data)) / k_ops.std(attribute_data)
             shifts_grid = [0.] if not args.shift_grid_search \
                 else keras.ops.arange(args.shift_min, args.shift_max, args.shift_step)
             normality_metrics = []
@@ -76,7 +75,7 @@ def test_power_transform(args):
                 logging.info(f"Plotting output distribution histogram...")
                 plot_pt_distributions(
                     pt_data=pt_out_norm,
-                    original_data=norm_attribute_data,
+                    original_data=attribute_data,
                     output_path=output_path,
                     power=llm_lmbda,
                     shift=s,
