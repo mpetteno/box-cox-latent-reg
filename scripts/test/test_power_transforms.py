@@ -20,7 +20,7 @@ import utilities
 def test_power_transform(args):
     for attribute in args.attributes:
         logging.info(f"Evaluating power transform for attribute '{attribute}'...")
-        main_output_path = Path(args.histogram_output_path) / "power-transform" / attribute
+        main_output_path = Path(args.histogram_output_path) / attribute
         if not main_output_path.exists():
             # Load dataset
             attribute_data = utilities.load_flat_dataset(dataset_path=args.dataset_path,
@@ -71,16 +71,17 @@ def test_power_transform(args):
                 logging.info(f"Negentropy cosh index is {negentropy_cosh:.10f}.")
                 # Save metrics to global array
                 normality_metrics.append([kurt, negentropy_naive, negentropy_exp, negentropy_cosh])
-                # Plot histogram of the output distribution
+                # Plot histogram of the output distributions
                 logging.info(f"Plotting output distribution histogram...")
-                plot_pt_distributions(
+                plot_distributions(
                     pt_data=pt_out_norm,
                     original_data=attribute_data,
                     output_path=output_path,
                     power=llm_lmbda,
                     shift=s,
                     attribute=attribute,
-                    histogram_bins=args.histogram_bins
+                    histogram_bins=args.histogram_bins,
+                    x_lim=args.x_lim,
                 )
                 # Save output distributions
                 logging.info(f"Saving output distributions to numpy file...")
@@ -120,13 +121,14 @@ def negentropy_approx_fn(x, fn: Callable):
 
 @mpl.rc_context({'text.usetex': True, 'font.family': 'serif', 'font.size': 20, 'font.serif': 'Computer Modern Roman',
                  'lines.linewidth': 1.5})
-def plot_pt_distributions(pt_data,
-                          original_data,
-                          output_path: Path,
-                          power: float,
-                          shift: float,
-                          attribute: str,
-                          histogram_bins: List[int]):
+def plot_distributions(pt_data,
+                       original_data,
+                       output_path: Path,
+                       power: float,
+                       shift: float,
+                       attribute: str,
+                       x_lim: float,
+                       histogram_bins: List[int]):
     histograms_output_path = output_path / "histograms"
     histograms_output_path.mkdir(parents=True, exist_ok=True)
     x = np.linspace(-4, 4, pt_data.shape[0])
@@ -143,6 +145,8 @@ def plot_pt_distributions(pt_data,
         axes[0].set_xlabel('$a$')
         axes[0].set_axisbelow(True)
         axes[0].yaxis.grid(linestyle=':')
+        if x_lim >= 0:
+            axes[0].set_xlim(right=x_lim)
         # Power transform histogram
         counts, bins = np.histogram(pt_data, bins=n_bins)
         weights = (counts / np.max(counts)) * 0.45
@@ -183,6 +187,8 @@ if __name__ == '__main__':
     parser.add_argument('--shift-step', help='Increment step for the grid search range of the shift parameter for the '
                                              'BoxCox power transform.',
                         default=0.25, required=False, type=float)
+    parser.add_argument('--x-lim', help='X axis limit value for original distribution histogram.',
+                        default=-1, required=False, type=float)
     parser.add_argument('--seed', help='Seed for random initializers.', required=False, type=int)
     parser.add_argument('--logging-level', help='Set the logging level.', default="INFO", required=False,
                         choices=["CRITICAL", "ERROR", "WARNING", "INFO"])
