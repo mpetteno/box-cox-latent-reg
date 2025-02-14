@@ -22,7 +22,10 @@ def test_model_generation(args):
         model.compile(run_eagerly=True)
         model.trainable = False
         # sample N = dataset_cardinality instances from model's prior
-        latent_codes = model.sample(keras.ops.convert_to_tensor(args.dataset_cardinality)).numpy()
+        latent_codes = model(
+            keras.ops.convert_to_tensor((args.dataset_cardinality, args.sequence_length)),
+            training=False
+        )[1].numpy()
         # control regularized dimension
         if args.control_reg_dim:
             latent_codes[:, args.regularized_dimension] = keras.ops.linspace(start=args.latent_min_val,
@@ -33,6 +36,7 @@ def test_model_generation(args):
         if normalizing_flow_ar_layer:
             normalizing_flow = normalizing_flow_ar_layer._normalizing_flow
             normalizing_flow._add_loss = False
+            normalizing_flow._bijectors[1]._training = False
         else:
             normalizing_flow = None
 

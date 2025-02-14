@@ -15,7 +15,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/test/test_power_transforms.py" />
-    <option name="PARAMETERS" value="--dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/train/*.tfrecord&quot; --sequence-length=64 --attributes contour --histogram-output-path=&quot;./output/tests/datasets/4bars_melodies_big/distributions/train&quot; --histogram-bins 60 70 80 90 100 110 120 --batch-size=512 --shift-grid-search --shift-min=0.023 --shift-max=0.024 --shift-step=0.001 --seed=42" />
+    <option name="PARAMETERS" value="--dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/train/*.tfrecord&quot; --sequence-length=64 --attributes contour --histogram-output-path=&quot;./output/tests/datasets/4bars_melodies_big/distributions/train&quot; --histogram-bins 60 70 80 90 100 110 120 --batch-size=512 --shift-grid-search --shift-min=0.023 --shift-max=0.024 --shift-step=0.001 --x-lim=15 --seed=42" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
