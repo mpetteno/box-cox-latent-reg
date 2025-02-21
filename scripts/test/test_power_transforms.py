@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import List, Callable
 
 import keras
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
@@ -19,10 +18,10 @@ import utilities
 
 def test_power_transform(args):
     for attribute in args.attributes:
-        logging.info(f"Evaluating power transform for attribute '{attribute}'...")
         main_output_path = Path(args.histogram_output_path) / attribute
+        utilities.set_log_handler(output_dir=main_output_path, log_level=getattr(logging, vargs.logging_level))
+        logging.info(f"Evaluating power transform for attribute '{attribute}'...")
         if not main_output_path.exists():
-            # Load dataset
             attribute_data = utilities.load_flat_dataset(dataset_path=args.dataset_path,
                                                          sequence_length=args.sequence_length,
                                                          attribute=attribute,
@@ -119,8 +118,6 @@ def negentropy_approx_fn(x, fn: Callable):
     return negentropy
 
 
-@mpl.rc_context({'text.usetex': True, 'font.family': 'serif', 'font.size': 20, 'font.serif': 'Computer Modern Roman',
-                 'lines.linewidth': 1.5})
 def plot_distributions(pt_data,
                        original_data,
                        output_path: Path,
@@ -136,28 +133,29 @@ def plot_distributions(pt_data,
     for n_bins in histogram_bins:
         filename = (f'{str(histograms_output_path)}/histogram_{attribute}_power_{power:.2f}_shift_{shift:.3f}'
                     f'_bins_{n_bins}.png')
-        # Create subplots
-        fig, axes = plt.subplots(1, 2, sharey=True, figsize=(5, 5))
         # Original distribution histogram
         counts, bins = np.histogram(original_data, bins=n_bins)
         weights = (counts / np.max(counts)) * 0.45
-        axes[0].hist(bins[:-1], bins=n_bins, weights=weights, color='C1')
-        axes[0].set_xlabel('$a$')
-        axes[0].set_axisbelow(True)
-        axes[0].yaxis.grid(linestyle=':')
-        if x_lim >= 0:
-            axes[0].set_xlim(right=x_lim)
-        # Power transform histogram
-        counts, bins = np.histogram(pt_data, bins=n_bins)
-        weights = (counts / np.max(counts)) * 0.45
-        axes[1].hist(bins[:-1], bins=n_bins, weights=weights, color='C0')
-        axes[1].plot(x, standard_gauss, '-', color='#fd5656', linewidth=2)
-        axes[1].set_xlabel('$T_\lambda(a)$')
-        axes[1].set_axisbelow(True)
-        axes[1].yaxis.grid(linestyle=':')
-        plt.tight_layout()
-        plt.savefig(filename, format='png', dpi=300)
-        plt.close()
+        with plt.rc_context(utilities.get_matplotlib_context()):
+            # Create subplots
+            fig, axes = plt.subplots(1, 2, sharey=True, figsize=(5, 5))
+            axes[0].hist(bins[:-1], bins=n_bins, weights=weights, color='C1')
+            axes[0].set_xlabel('$a$')
+            axes[0].set_axisbelow(True)
+            axes[0].yaxis.grid(linestyle=':')
+            if x_lim >= 0:
+                axes[0].set_xlim(right=x_lim)
+            # Power transform histogram
+            counts, bins = np.histogram(pt_data, bins=n_bins)
+            weights = (counts / np.max(counts)) * 0.45
+            axes[1].hist(bins[:-1], bins=n_bins, weights=weights, color='C0')
+            axes[1].plot(x, standard_gauss, '-', color='#fd5656', linewidth=2)
+            axes[1].set_xlabel('$T_\lambda(a)$')
+            axes[1].set_axisbelow(True)
+            axes[1].yaxis.grid(linestyle=':')
+            plt.tight_layout()
+            plt.savefig(filename, format='png', dpi=300)
+            plt.close()
 
 
 if __name__ == '__main__':
@@ -200,5 +198,4 @@ if __name__ == '__main__':
         keras.utils.set_random_seed(vargs.seed)
         np.random.seed(vargs.seed)
         tf.config.experimental.enable_op_determinism()
-    logging.getLogger().setLevel(vargs.logging_level)
     test_power_transform(vargs)

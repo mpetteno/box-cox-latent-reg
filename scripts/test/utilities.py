@@ -1,7 +1,8 @@
 import argparse
 import functools
+import logging
+import sys
 
-import keras
 import numpy as np
 import tensorflow as tf
 from resolv_mir.note_sequence.attributes import compute_attribute
@@ -68,9 +69,47 @@ def load_dataset(dataset_path: str,
     return tfrecord_loader.load_dataset()
 
 
+def set_log_handler(output_dir, log_level):
+    class InfoFilter(logging.Filter):
+        def filter(self, record):
+            return record.levelno == logging.INFO
+
+    # Create logger
+    logger = logging.getLogger()
+    logger.setLevel(log_level)
+    # Create file handler
+    file_handler = logging.FileHandler(output_dir / 'log.txt')
+    file_handler.setLevel(log_level)
+    file_handler.addFilter(InfoFilter())
+    # Create console handler (stdout)
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(log_level)
+    console_handler.addFilter(InfoFilter())
+    # Use the default logging format
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(formatter)
+    console_handler.setFormatter(formatter)
+    # Add handlers to the logger
+    logger.addHandler(file_handler)
+    logger.addHandler(console_handler)
+
+
+def get_matplotlib_context():
+    return {
+        'text.usetex': True,
+        'font.family': 'serif',
+        'font.size': 20,
+        'font.serif': 'Computer Modern Roman',
+        'lines.linewidth': 1.5
+    }
+
+
 def get_arg_parser(description: str) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('--model-path', required=True, help='Path to the .keras model checkpoint.')
+    parser.add_argument('--conditional-model-path', required=True,
+                        help='Path to the .keras conditional model checkpoint.')
+    parser.add_argument('--unconditional-model-path', required=True,
+                        help='Path to the .keras unconditional model checkpoint.')
     parser.add_argument('--test-dataset-path', required=True,
                         help='Path to the dataset containing the test SequenceExample.')
     parser.add_argument('--dataset-cardinality', help='Cardinality of the test dataset.', required=True, type=int)

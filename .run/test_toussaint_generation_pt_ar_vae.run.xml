@@ -15,7 +15,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/test/test_model_generation.py" />
-    <option name="PARAMETERS" value="--model-path=&quot;./output/training/pt-ar-vae/toussaint/pt-non-trainable/gamma-1.0-shift-6.0-power-2.08/checkpoints/epoch_40-val_loss_0.4695.keras&quot; --test-dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/test/*.tfrecord&quot; --output-path=&quot;./output/tests/models/pt-ar-vae/toussaint/pt-non-trainable/gamma-1.0-shift-6.0-power-2.08&quot; --dataset-cardinality=22265 --control-reg-dim --num-midi-to-save=1000 --sequence-length=64 --attributes=&quot;toussaint&quot; --regularized-dimension=0 --batch-size=512 --seed=42 --logging-level=&quot;INFO&quot;" />
+    <option name="PARAMETERS" value="--model-path=&quot;./output/models/pt-ar-vae/toussaint/pt-non-trainable/gamma-1.0-shift-6.0-power-2.08/checkpoints/epoch_40-val_loss_0.4695.keras&quot; --test-dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/test/*.tfrecord&quot; --output-path=&quot;./output/tests/models/pt-ar-vae/toussaint/pt-non-trainable/gamma-1.0-shift-6.0-power-2.08&quot; --dataset-cardinality=22265 --num-midi-to-save=1000 --sequence-length=64 --attributes=&quot;toussaint&quot; --control-reg-dim --regularized-dimension=0 --batch-size=512 --seed=42 --logging-level=&quot;INFO&quot;" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

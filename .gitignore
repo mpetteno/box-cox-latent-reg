@@ -162,4 +162,4 @@ cython_debug/
 # Custom entries
 **/config/**/*.ini
 **/config/**/*.json
-/latex/
+/resources/
