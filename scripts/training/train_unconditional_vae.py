@@ -1,11 +1,11 @@
 """
 Usage example:
 
-    python ./scripts/ml/training/train_standard_vae.py \
-        --model-config-path=./scripts/ml/training/config/model.json \
-        --trainer-config-path=./scripts/ml/training/config/trainer.json \
-        --train-dataset-config-path=./scripts/ml/training/config/train_dataset.json \
-        --val-dataset-config-path=./scripts/ml/training/config/val_dataset.json \
+    python ./scripts/training/train_standard_vae.py \
+        --model-config-path=./scripts/training/config/model.json \
+        --trainer-config-path=./scripts/training/config/trainer.json \
+        --train-dataset-config-path=./scripts/training/config/train_dataset.json \
+        --val-dataset-config-path=./scripts/training/config/val_dataset.json \
         --gpus=0
 
 """

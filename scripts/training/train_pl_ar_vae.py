@@ -1,11 +1,11 @@
 """
 Usage example:
 
-    python ./scripts/ml/training/train_sign_ar_vae.py \
-        --model-config-path=./scripts/ml/training/config/model.json \
-        --trainer-config-path=./scripts/ml/training/config/trainer.json \
-        --train-dataset-config-path=./scripts/ml/training/config/train_dataset.json \
-        --val-dataset-config-path=./scripts/ml/training/config/val_dataset.json \
+    python ./scripts/training/train_pl_ar_vae.py \
+        --model-config-path=./scripts/training/config/model.json \
+        --trainer-config-path=./scripts/training/config/trainer.json \
+        --train-dataset-config-path=./scripts/training/config/train_dataset.json \
+        --val-dataset-config-path=./scripts/training/config/val_dataset.json \
         --attribute="contour" \
         --reg-dim=0 \
         --scale-factor=1.0 \
@@ -23,10 +23,10 @@ from resolv_ml.utilities.schedulers import get_scheduler
 from scripts.training import utilities
 
 if __name__ == '__main__':
-    arg_parser = utilities.get_arg_parser(description="Train AR-VAE model with sign attribute regularization.")
+    arg_parser = utilities.get_arg_parser(description="Train AR-VAE model with PL attribute regularization.")
     arg_parser.add_argument('--attribute', help='Attribute to regularize.', required=True)
     arg_parser.add_argument('--reg-dim', help='Latent code regularization dimension.', default=0, type=int)
-    arg_parser.add_argument('--scale-factor', help='Scale factor for tanh in sign regularization loss.', default=1.0,
+    arg_parser.add_argument('--scale-factor', help='Scale factor for tanh in PL regularization loss.', default=1.0,
                             type=float)
     args = arg_parser.parse_args()
 
@@ -53,7 +53,7 @@ if __name__ == '__main__':
             trainer_config_path=args.trainer_config_path,
             hierarchical_decoder=args.hierarchical_decoder,
             attribute_regularizers={
-                "sign_ar": SignAttributeRegularizer(
+                "pl_ar": SignAttributeRegularizer(
                     weight_scheduler=get_scheduler(
                         schedule_type=schedulers_config["attr_reg_gamma"]["type"],
                         schedule_config=schedulers_config["attr_reg_gamma"]["config"]

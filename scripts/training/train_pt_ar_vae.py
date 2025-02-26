@@ -1,19 +1,15 @@
 """
 Usage example:
 
-    python ./scripts/ml/training/train_power_transform_ar_vae.py \
-        --model-config-path=./scripts/ml/training/config/model.json \
-        --trainer-config-path=./scripts/ml/training/config/trainer.json \
-        --train-dataset-config-path=./scripts/ml/training/config/train_dataset.json \
-        --val-dataset-config-path=./scripts/ml/training/config/val_dataset.json \
+    python ./scripts/training/train_pt_ar_vae.py \
+        --model-config-path=./scripts/training/config/model.json \
+        --trainer-config-path=./scripts/training/config/trainer.json \
+        --train-dataset-config-path=./scripts/training/config/train_dataset.json \
+        --val-dataset-config-path=./scripts/training/config/val_dataset.json \
         --attribute="contour" \
         --reg-dim=0 \
-        --power-init=0.0 \
-        --power-min=-2.0 \
-        --power-max=2.0 \
-        --power-trainable \
-        --shift-init=0.0 \
-        --shift-trainable \
+        --power=0.0 \
+        --shift=0.0 \
         --gpus=0
 
 """
@@ -30,23 +26,13 @@ from resolv_ml.utilities.schedulers import get_scheduler
 from scripts.training import utilities
 
 if __name__ == '__main__':
-    arg_parser = utilities.get_arg_parser(description="Train AR-VAE model with sign attribute regularization.")
+    arg_parser = utilities.get_arg_parser(description="Train AR-VAE model with PT attribute regularization.")
     arg_parser.add_argument('--attribute', help='Attribute to regularize.', required=True)
     arg_parser.add_argument('--reg-dim', help='Latent code regularization dimension.', default=0, type=int)
-    arg_parser.add_argument('--power-init', help='Initial value for the power transform\'s power parameter.',
+    arg_parser.add_argument('--power', help='Initial value for the power transform\'s power parameter.',
                             default=0.0, type=float)
-    arg_parser.add_argument('--power-min', help='Minimum value for the power transform\'s power parameter.',
-                            default=-2.0, type=float)
-    arg_parser.add_argument('--power-max', help='Maximum value for the power transform\'s power parameter.',
-                            default=2.0, type=float)
-    arg_parser.add_argument('--power-trainable', help='Set the power transform\'s power parameter as trainable .',
-                            action="store_true")
-    arg_parser.add_argument('--shift-init', help='Initial value for the power transform\'s shift parameter.',
+    arg_parser.add_argument('--shift', help='Initial value for the power transform\'s shift parameter.',
                             default=0.0, type=float)
-    arg_parser.add_argument('--shift-trainable', help='Set the power transform\'s shift parameter as trainable .',
-                            action="store_true")
-    arg_parser.add_argument('--add-nf-loss', help='Set the power transform\'s shift parameter as trainable .',
-                            action="store_true")
     args = arg_parser.parse_args()
 
     logging.getLogger().setLevel(args.logging_level)
@@ -75,19 +61,15 @@ if __name__ == '__main__':
                 "nf_ar": NormalizingFlowAttributeRegularizer(
                     normalizing_flow=NormalizingFlow(
                         bijectors=[
-                            BoxCox(power_init_value=args.power_init,
-                                   power_min_value=args.power_min,
-                                   power_max_value=args.power_max,
-                                   shift_init_value=args.shift_init if args.shift_init else 1e-5,
-                                   power_trainable=args.power_trainable,
-                                   shift_trainable=args.shift_trainable),
+                            BoxCox(
+                                power_init_value=args.power,
+                                shift_init_value=args.shift if args.shift else 1e-5,
+                                power_trainable=False,
+                                shift_trainable=False
+                            ),
                             BatchNormalization(scale=False, center=False)
                         ],
-                        add_loss=args.add_nf_loss,
-                        nll_weight_scheduler=get_scheduler(
-                            schedule_type=schedulers_config["nf_reg_csi"]["type"],
-                            schedule_config=schedulers_config["nf_reg_csi"]["config"]
-                        )
+                        add_loss=False
                     ),
                     reg_weight_scheduler=get_scheduler(
                         schedule_type=schedulers_config["attr_reg_gamma"]["type"],

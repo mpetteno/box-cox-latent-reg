@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test_note_density_generation_sign_ar_vae" type="PythonConfigurationType" factoryName="Python" folderName="Test - Sign AR-VAE" editBeforeRun="true">
+  <configuration default="false" name="test_note_density_generation_pl_ar_vae" type="PythonConfigurationType" factoryName="Python" folderName="Test - PL AR-VAE" editBeforeRun="true">
     <module name="box-cox-latent-reg" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />

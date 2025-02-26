@@ -1,11 +1,11 @@
 """
 Usage example:
 
-    python ./scripts/ml/training/train_default_ar_vae.py \
-        --model-config-path=./scripts/ml/training/config/model.json \
-        --trainer-config-path=./scripts/ml/training/config/trainer.json \
-        --train-dataset-config-path=./scripts/ml/training/config/train_dataset.json \
-        --val-dataset-config-path=./scripts/ml/training/config/val_dataset.json \
+    python ./scripts/training/train_naive_ar_vae.py \
+        --model-config-path=./scripts/training/config/model.json \
+        --trainer-config-path=./scripts/training/config/trainer.json \
+        --train-dataset-config-path=./scripts/training/config/train_dataset.json \
+        --val-dataset-config-path=./scripts/training/config/val_dataset.json \
         --attribute="contour" \
         --reg-dim=0 \
         --gpus=0
@@ -22,7 +22,7 @@ from resolv_ml.utilities.schedulers import get_scheduler
 from scripts.training import utilities
 
 if __name__ == '__main__':
-    arg_parser = utilities.get_arg_parser(description="Train AR-VAE model with default attribute regularization.")
+    arg_parser = utilities.get_arg_parser(description="Train AR-VAE model with naive attribute regularization.")
     arg_parser.add_argument('--attribute', help='Attribute to regularize.', required=True)
     arg_parser.add_argument('--reg-dim', help='Latent code regularization dimension.', default=0, type=int)
     args = arg_parser.parse_args()
