@@ -24,14 +24,14 @@ def test_model_regularization(args):
                                          batch_size=args.batch_size,
                                          shift=keras.backend.epsilon(),
                                          parse_sequence_feature=True)
-        # ------------------------------------------------------------------------------------------------------------
+        logging.info("-----------------------------------------------------------------------------------------------")
         logging.info("Encoding-decoding sequences with conditional model...")
         conditional_model = keras.saving.load_model(args.conditional_model_path, compile=False)
         conditional_model.trainable = False
         conditional_model.compile(run_eagerly=True)
         (cond_decoded_sequences, cond_latent_codes, input_sequences, input_sequences_attributes,
-            _) = conditional_model.predict(
-                dataset, steps=args.dataset_cardinality//args.batch_size
+         _) = conditional_model.predict(
+            dataset, steps=args.dataset_cardinality // args.batch_size
         )
         input_sequences_attributes = input_sequences_attributes.squeeze()
         max_input_sequences_attributes = np.max(input_sequences_attributes)
@@ -46,41 +46,58 @@ def test_model_regularization(args):
             non_regularized_dimension = args.non_regularized_dimension
         reg_dim_data = cond_latent_codes[:, args.regularized_dimension]
         non_reg_dim_data = cond_latent_codes[:, non_regularized_dimension]
-        # ------------------------------------------------------------------------------------------------------------
+        logging.info("-----------------------------------------------------------------------------------------------")
         logging.info("Encoding-decoding sequences with unconditional model...")
         unconditional_model = keras.saving.load_model(args.unconditional_model_path, compile=False)
         unconditional_model.trainable = False
         unconditional_model.compile(run_eagerly=True)
         uncond_decoded_sequences, uncond_latent_codes, _, _, _ = unconditional_model.predict(
-            dataset, steps=args.dataset_cardinality//args.batch_size
+            dataset, steps=args.dataset_cardinality // args.batch_size
         )
-        # ------------------------------------------------------------------------------------------------------------
-        logging.info("Regularization for encoded sequences...")
+        logging.info("-----------------------------------------------------------------------------------------------")
+        logging.info("Correlation coefficients for encoded sequences...")
         enc_reg_pearson_coefficient = scipy.stats.pearsonr(input_sequences_attributes, reg_dim_data)
         logging.info(f"Pearson coefficient of input sequences attributes with regularized dimension "
-                     f"{args.regularized_dimension} is: {enc_reg_pearson_coefficient.statistic}")
+                     f"{args.regularized_dimension} is: {enc_reg_pearson_coefficient.statistic:.6f}")
         enc_reg_spearman_coefficient = scipy.stats.spearmanr(input_sequences_attributes, reg_dim_data)
         logging.info(f"Spearman coefficient of input sequences attributes with regularized dimension "
-                     f"{args.regularized_dimension} is: {enc_reg_spearman_coefficient.statistic}")
+                     f"{args.regularized_dimension} is: {enc_reg_spearman_coefficient.statistic:.6f}")
         enc_non_reg_pearson_coefficient = scipy.stats.pearsonr(input_sequences_attributes, non_reg_dim_data)
         logging.info(f"Pearson coefficient of input sequences attribute with non-regularized dimension "
-                     f"{non_regularized_dimension} is: {enc_non_reg_pearson_coefficient.statistic}")
+                     f"{non_regularized_dimension} is: {enc_non_reg_pearson_coefficient.statistic:.6f}")
         enc_non_reg_spearman_coefficient = scipy.stats.spearmanr(input_sequences_attributes, non_reg_dim_data)
         logging.info(f"Spearman coefficient of input sequences attributes with non-regularized dimension "
-                     f"{non_regularized_dimension} is: {enc_non_reg_spearman_coefficient.statistic}")
-        mu_cond, sigma_cond = np.mean(cond_latent_codes, axis=0), np.cov(cond_latent_codes, rowvar=False)
-        mu_uncond, sigma_uncond = np.mean(uncond_latent_codes, axis=0), np.cov(uncond_latent_codes, rowvar=False)
-        mu_prior, sigma_prior = np.zeros(conditional_model._z_size), np.identity(conditional_model._z_size)
-        z_fid = metrics.compute_gaussian_fid(mu1=mu_cond, sigma1=sigma_cond, mu2=mu_uncond, sigma2=sigma_uncond)
-        logging.info(f"FD between conditional and unconditional latent spaces is {z_fid}")
-        z_fid_prior = metrics.compute_gaussian_fid(mu1=mu_cond, sigma1=sigma_cond, mu2=mu_prior, sigma2=sigma_prior)
-        logging.info(f"FD between conditional and prior latent spaces is {z_fid_prior}")
-        z_mmd_rbf = metrics.compute_mmd_rbf(cond_latent_codes, uncond_latent_codes)
-        logging.info(f"MMD RBF between conditional and unconditional latent spaces is {z_mmd_rbf}")
-        z_mmd_poly = metrics.compute_mmd_polynomial(cond_latent_codes, uncond_latent_codes)
-        logging.info(f"MMD polynomial between conditional and unconditional latent spaces is {z_mmd_poly}")
+                     f"{non_regularized_dimension} is: {enc_non_reg_spearman_coefficient.statistic:.6f}")
+        logging.info("-----------------------------------------------------------------------------------------------")
+        z_i_cond_latents = cond_latent_codes[:, args.regularized_dimension]
+        metric_names = {
+            'kl_divergence': 'KL Divergence',
+            'hellinger_distance': 'Hellinger Distance',
+            'overlap_coefficient': 'Overlap Coefficient',
+            'total_variation': 'Total Variation Distance',
+            'jensen_shannon': 'Jensen-Shannon Divergence',
+            'wasserstein': 'Wasserstein Distance',
+            'mmd_rbf': 'MMD (RBF Kernel)',
+            'mmd_linear': 'MMD (Linear Kernel)',
+            'mmd_polynomial': 'MMD (Polynomial Kernel)'
+        }
+        logging.info("Regularized dimension metrics for conditional encoded sequences...")
+        z_i_cond_metrics = metrics.plot_all_metrics(z_i_cond_latents, methods=['histogram', 'kde'])
+        logging.info("Distribution Metrics:")
+        logging.info("-" * 40)
+        for key, name in metric_names.items():
+            logging.info(f"{name:30s}: {z_i_cond_metrics[key]:.6f}")
+        logging.info("-----------------------------------------------------------------------------------------------")
+        logging.info("Regularized dimension metrics for unconditional encoded sequences...")
+        z_i_uncond_latents = uncond_latent_codes[:, args.regularized_dimension]
+        z_i_uncond_metrics = metrics.plot_all_metrics(z_i_uncond_latents, methods=['histogram', 'kde'])
+        logging.info("Distribution Metrics:")
+        logging.info("-" * 40)
+        for key, name in metric_names.items():
+            logging.info(f"{name:30s}: {z_i_uncond_metrics[key]:.6f}")
+        # -----------------------------------------------------------------------------------------------
         regularization_scatter_plot(
-            output_path=str(output_dir/"encoded_sequences_reg_latent_space.png"),
+            output_path=str(output_dir / "encoded_sequences_reg_latent_space.png"),
             title="",
             reg_dim_data=reg_dim_data,
             non_reg_dim_data=non_reg_dim_data,
@@ -94,26 +111,27 @@ def test_model_regularization(args):
                 vmin=min_input_sequences_attributes,
             ) if args.plot_power_norm else None
         )
-        # ------------------------------------------------------------------------------------------------------------
-        logging.info("Regularization for decoded sequences...")
+        logging.info("-----------------------------------------------------------------------------------------------")
+        logging.info("Correlation coefficients for decoded sequences...")
         decoded_sequences_attrs, hold_note_start_seq_count = utilities.compute_sequences_attributes(
             uncond_decoded_sequences, attribute, args.sequence_length)
         logging.info(f"Decoded {hold_note_start_seq_count} sequences that start with an hold note token "
-                     f"({hold_note_start_seq_count*100/args.dataset_cardinality:.2f}%).")
+                     f"({hold_note_start_seq_count * 100 / args.dataset_cardinality:.2f}%).")
         dec_reg_pearson_coefficient = scipy.stats.pearsonr(decoded_sequences_attrs, reg_dim_data)
         logging.info(f"Pearson coefficient of decoded sequences attributes with regularized dimension "
-                     f"{args.regularized_dimension} is: {dec_reg_pearson_coefficient.statistic}")
+                     f"{args.regularized_dimension} is: {dec_reg_pearson_coefficient.statistic:.6f}")
         dec_reg_spearman_coefficient = scipy.stats.spearmanr(decoded_sequences_attrs, reg_dim_data)
         logging.info(f"Spearman coefficient of decoded sequences attributes with regularized dimension "
-                     f"{args.regularized_dimension} is: {dec_reg_spearman_coefficient.statistic}")
+                     f"{args.regularized_dimension} is: {dec_reg_spearman_coefficient.statistic:.6f}")
         dec_non_reg_pearson_coefficient = scipy.stats.pearsonr(decoded_sequences_attrs, non_reg_dim_data)
         logging.info(f"Pearson coefficient of decoded sequences attribute with non-regularized dimension "
-                     f"{non_regularized_dimension} is: {dec_non_reg_pearson_coefficient.statistic}")
+                     f"{non_regularized_dimension} is: {dec_non_reg_pearson_coefficient.statistic:.6f}")
         dec_non_reg_spearman_coefficient = scipy.stats.spearmanr(decoded_sequences_attrs, non_reg_dim_data)
         logging.info(f"Spearman coefficient of decoded sequences attributes with non-regularized dimension "
-                     f"{non_regularized_dimension} is: {dec_non_reg_spearman_coefficient.statistic}")
+                     f"{non_regularized_dimension} is: {dec_non_reg_spearman_coefficient.statistic:.6f}")
+        # -----------------------------------------------------------------------------------------------
         regularization_scatter_plot(
-            output_path=str(output_dir/"decoded_sequences_reg_latent_space.png"),
+            output_path=str(output_dir / "decoded_sequences_reg_latent_space.png"),
             title="",
             reg_dim_data=reg_dim_data,
             non_reg_dim_data=non_reg_dim_data,

@@ -15,7 +15,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/test/test_model_regularization.py" />
-    <option name="PARAMETERS" value="--conditional-model-path=&quot;./output/models/sign-ar-vae/pitch-range/gamma-1.0/checkpoints/epoch_40-val_loss_0.3739.keras&quot; --unconditional-model-path=&quot;output/models/unconditional-vae/checkpoints/epoch_40-val_loss_0.2795.keras&quot; --test-dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/test/*.tfrecord&quot; --dataset-cardinality=22265 --sequence-length=64 --attributes=&quot;pitch_range&quot; --regularized-dimension=0 --output-path=&quot;./output/tests/models/sign-ar-vae/pitch-range/gamma-1.0&quot; --batch-size=512 --seed=42 --logging-level=&quot;INFO&quot;" />
+    <option name="PARAMETERS" value="--conditional-model-path=&quot;./output/models/pl-ar-vae/pitch-range/gamma-1.0/checkpoints/epoch_40-val_loss_0.3739.keras&quot; --unconditional-model-path=&quot;output/models/unconditional-vae/checkpoints/epoch_40-val_loss_0.2795.keras&quot; --test-dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/test/*.tfrecord&quot; --dataset-cardinality=22265 --sequence-length=64 --attributes=&quot;pitch_range&quot; --regularized-dimension=0 --output-path=&quot;./output/tests/models/pl-ar-vae/pitch-range/gamma-1.0&quot; --batch-size=512 --seed=42 --logging-level=&quot;INFO&quot;" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
