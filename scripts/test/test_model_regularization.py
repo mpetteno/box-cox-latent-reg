@@ -82,7 +82,8 @@ def test_model_regularization(args):
             'mmd_polynomial': 'MMD (Polynomial Kernel)'
         }
         logging.info("Regularized dimension metrics for conditional encoded sequences...")
-        z_i_cond_metrics = metrics.plot_all_metrics(z_i_cond_latents, methods=['histogram', 'kde'])
+        z_i_cond_metrics = metrics.compute_distribution_metrics(z_i_cond_latents, methods=['histogram', 'kde'])
+        overlapping_area_plot(z_i_cond_metrics, output_path=str(output_dir / "oa.png"))
         logging.info("Distribution Metrics:")
         logging.info("-" * 40)
         for key, name in metric_names.items():
@@ -90,7 +91,7 @@ def test_model_regularization(args):
         logging.info("-----------------------------------------------------------------------------------------------")
         logging.info("Regularized dimension metrics for unconditional encoded sequences...")
         z_i_uncond_latents = uncond_latent_codes[:, args.regularized_dimension]
-        z_i_uncond_metrics = metrics.plot_all_metrics(z_i_uncond_latents, methods=['histogram', 'kde'])
+        z_i_uncond_metrics = metrics.compute_distribution_metrics(z_i_uncond_latents, methods=['histogram', 'kde'])
         logging.info("Distribution Metrics:")
         logging.info("-" * 40)
         for key, name in metric_names.items():
@@ -152,6 +153,7 @@ def regularization_scatter_plot(output_path: str,
                                 reg_dim_data,
                                 non_reg_dim_data,
                                 attributes,
+                                xlim: float = None,
                                 colorbar: bool = True,
                                 vmin: float = None,
                                 vmax: float = None,
@@ -170,7 +172,28 @@ def regularization_scatter_plot(output_path: str,
             plt.colorbar()
         plt.xlabel(r'$z_{\ell}$')
         plt.ylabel('$z_i$')
+        plt.ylim(-4.5, 4.5)
         plt.title(title)
+        plt.tight_layout()
+        plt.savefig(output_path, format='png', dpi=300)
+        plt.close()
+
+
+def overlapping_area_plot(metrics_dict, output_path):
+    with plt.rc_context(utilities.get_matplotlib_context()):
+        overlap_integrand = np.minimum(metrics_dict['p_x'], metrics_dict['q_x'])
+        plt.plot(metrics_dict['x'], metrics_dict['p_x'], color='C0', label=r'$p_\theta(z_i|x)$')
+        plt.plot(metrics_dict['x'], metrics_dict['q_x'], color='C1', label=r'$r(z_i)$')
+        plt.fill_between(x=metrics_dict['x'],
+                         y1=overlap_integrand,
+                         y2=np.zeros_like(metrics_dict['x']),
+                         alpha=0.3,
+                         color='C2',
+                         label=f'OA')
+        plt.legend(fontsize='small', loc='upper right', framealpha=0.8)
+        plt.grid(axis='y', linestyle=':')
+        plt.xlim(-4.0, 4.0)
+        plt.title("")
         plt.tight_layout()
         plt.savefig(output_path, format='png', dpi=300)
         plt.close()
@@ -178,7 +201,7 @@ def regularization_scatter_plot(output_path: str,
 
 if __name__ == '__main__':
     parser = utilities.get_arg_parser("")
-    parser.add_argument('--plot-power-norm', help='Exponent for the color bar\'s power normalization.',
+    parser.add_argument('--plot-power-norm', help='xlim for the scatter plot.',
                         required=False, type=float, default=0.0)
     parser.add_argument('--non-regularized-dimension', help='Index of the latent code non regularized dimension.',
                         required=False, type=int)

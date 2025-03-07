@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test_note_density_regularization_pt_ar_vae" type="PythonConfigurationType" factoryName="Python" folderName="Test - PT AR-VAE" editBeforeRun="true">
+  <configuration default="false" name="test_note_density_regularization_pt_ar_vae" type="PythonConfigurationType" factoryName="Python" folderName="Test - PT AR-VAE - Gamma 1.0" editBeforeRun="true">
     <module name="box-cox-latent-reg" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
@@ -15,7 +15,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/scripts/test/test_model_regularization.py" />
-    <option name="PARAMETERS" value="--conditional-model-path=&quot;./output/models/pt-ar-vae/note-density/pt-non-trainable/gamma-1.0-shift-1e-5-power-0.09/checkpoints/epoch_40-val_loss_0.3564.keras&quot; --unconditional-model-path=&quot;output/models/unconditional-vae/checkpoints/epoch_40-val_loss_0.2795.keras&quot; --test-dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/test/*.tfrecord&quot; --dataset-cardinality=22265 --sequence-length=64 --attributes=&quot;note_density&quot; --regularized-dimension=0 --output-path=&quot;./output/tests/models/pt-ar-vae/note-density/pt-non-trainable/gamma-1.0-shift-1e-5-power-0.09&quot; --batch-size=512 --seed=42 --logging-level=&quot;INFO&quot;" />
+    <option name="PARAMETERS" value="--conditional-model-path=&quot;./output/models/pt-ar-vae/note-density/pt-non-trainable/gamma-1.0-shift-1e-5-power-0.09/checkpoints/epoch_40-val_loss_0.3564.keras&quot; --unconditional-model-path=&quot;output/models/unconditional-vae/checkpoints/epoch_40-val_loss_0.2795.keras&quot; --test-dataset-path=&quot;./output/datasets/representation/4bars_melodies_distinct/lakh_midi-v1.0.0-full/midi/pitchseq/test/*.tfrecord&quot; --dataset-cardinality=22265 --sequence-length=64 --attributes=&quot;note_density&quot; --regularized-dimension=0 --output-path=&quot;./output/tests/models/pt-ar-vae/note-density/gamma-1.0&quot; --batch-size=512 --seed=42 --logging-level=&quot;INFO&quot;" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

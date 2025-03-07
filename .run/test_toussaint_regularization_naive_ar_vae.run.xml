@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test_toussaint_regularization_naive_ar_vae" type="PythonConfigurationType" factoryName="Python" folderName="Test - Naive AR-VAE" editBeforeRun="true">
+  <configuration default="false" name="test_toussaint_regularization_naive_ar_vae" type="PythonConfigurationType" factoryName="Python" folderName="Test - Naive AR-VAE - Gamma 1.0" editBeforeRun="true">
     <module name="box-cox-latent-reg" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />

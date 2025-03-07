@@ -1,6 +1,5 @@
 import numpy as np
 from scipy import stats
-import matplotlib.pyplot as plt
 from scipy.integrate import simpson
 from scipy.spatial.distance import pdist, squareform
 
@@ -162,89 +161,3 @@ def compute_distribution_metrics(samples, density_estimation_method='kde', **kwa
         'p_x': p_x,
         'q_x': q_x
     }
-
-
-def plot_all_metrics(samples, method='kde', **kwargs):
-    """
-    Plot all distribution metrics including MMD.
-
-    Args:
-        samples (array-like): Samples from the distribution
-        method (str): Estimation method
-        **kwargs: Additional parameters
-
-    Returns:
-        dict: Computed metrics
-    """
-    metrics = compute_distribution_metrics(samples, method, **kwargs)
-
-    fig, axs = plt.subplots(3, 2, figsize=(14, 15))
-
-    # Plot densities
-    axs[0, 0].plot(metrics['x'], metrics['p_x'], 'b-', label='Estimated p(x)')
-    axs[0, 0].plot(metrics['x'], metrics['q_x'], 'r-', label='Standard Gaussian q(x)')
-    axs[0, 0].set_title('Density Comparison')
-    axs[0, 0].legend()
-    axs[0, 0].grid(True)
-
-    # Plot overlap
-    overlap_integrand = np.minimum(metrics['p_x'], metrics['q_x'])
-    axs[0, 1].plot(metrics['x'], metrics['p_x'], 'b-', label='p(x)')
-    axs[0, 1].plot(metrics['x'], metrics['q_x'], 'r-', label='q(x)')
-    axs[0, 1].fill_between(metrics['x'], overlap_integrand,
-                           np.zeros_like(metrics['x']),
-                           alpha=0.5, color='purple',
-                           label=f'Overlap = {metrics["overlap_coefficient"]:.4f}')
-    axs[0, 1].set_title('Distribution Overlap')
-    axs[0, 1].legend()
-    axs[0, 1].grid(True)
-
-    # Plot sqrt densities (for Hellinger)
-    axs[1, 0].plot(metrics['x'], np.sqrt(metrics['p_x']), 'b-', label='√p(x)')
-    axs[1, 0].plot(metrics['x'], np.sqrt(metrics['q_x']), 'r-', label='√q(x)')
-    axs[1, 0].fill_between(metrics['x'],
-                           np.minimum(np.sqrt(metrics['p_x']), np.sqrt(metrics['q_x'])),
-                           np.zeros_like(metrics['x']),
-                           alpha=0.3, color='green')
-    axs[1, 0].set_title(f'Hellinger Related\nHellinger = {metrics["hellinger_distance"]:.4f}')
-    axs[1, 0].legend()
-    axs[1, 0].grid(True)
-
-    # Plot KL divergence integrand
-    kl_integrand = metrics['p_x'] * np.log(metrics['p_x'] / metrics['q_x'])
-    axs[1, 1].plot(metrics['x'], kl_integrand, 'g-', label='KL integrand')
-    axs[1, 1].set_title(f'KL Divergence Integrand\nKL = {metrics["kl_divergence"]:.4f}')
-    axs[1, 1].legend()
-    axs[1, 1].grid(True)
-
-    # Plot MMD comparison (bar chart)
-    mmd_values = [metrics['mmd_rbf'], metrics['mmd_linear'], metrics['mmd_polynomial']]
-    kernel_names = ['RBF', 'Linear', 'Polynomial']
-
-    axs[2, 0].bar(kernel_names, mmd_values, color=['blue', 'green', 'orange'])
-    axs[2, 0].set_title('Maximum Mean Discrepancy (MMD)')
-    axs[2, 0].set_ylabel('MMD Value')
-    axs[2, 0].grid(True, axis='y')
-
-    for i, v in enumerate(mmd_values):
-        axs[2, 0].text(i, v + 0.01, f"{v:.4f}", ha='center')
-
-    # Plot distribution CDFs for Wasserstein distance
-    p_cdf = np.cumsum(metrics['p_x']) * (metrics['x'][1] - metrics['x'][0])
-    p_cdf /= p_cdf[-1]  # Normalize
-    q_cdf = stats.norm.cdf(metrics['x'], 0, 1)
-
-    axs[2, 1].plot(metrics['x'], p_cdf, 'b-', label='Empirical CDF')
-    axs[2, 1].plot(metrics['x'], q_cdf, 'r-', label='Standard Gaussian CDF')
-    axs[2, 1].fill_between(metrics['x'],
-                           np.abs(p_cdf - q_cdf),
-                           np.zeros_like(metrics['x']),
-                           alpha=0.3, color='purple')
-    axs[2, 1].set_title(f'CDF Comparison\nWasserstein = {metrics["wasserstein"]:.4f}')
-    axs[2, 1].legend()
-    axs[2, 1].grid(True)
-
-    plt.tight_layout()
-    plt.show()
-
-    return metrics
