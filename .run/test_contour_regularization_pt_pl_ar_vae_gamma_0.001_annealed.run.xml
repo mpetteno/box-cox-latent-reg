@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="test_contour_regularization_pt_pl_ar_vae_gamma_0.001_annealed" type="PythonConfigurationType" factoryName="Python" folderName="Test - PT+PL AR-VAE" editBeforeRun="true">
+  <configuration default="false" name="test_contour_regularization_pt_pl_ar_vae_gamma_0.001_annealed" type="PythonConfigurationType" factoryName="Python" folderName="Test - PT+PL AR-VAE - Gamma 0.001 Annealed" editBeforeRun="true">
     <module name="box-cox-latent-reg" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
