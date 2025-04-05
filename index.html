@@ -2,18 +2,238 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>On the Joint Minimization of Regularization Loss Functions in Deep Variational Bayesian Methods for
-        Attribute-Controlled Symbolic Music Generation</title>
+    <title>Additional Material – On the Joint Minimization of Regularization Loss
+    Functions in Deep Variational Bayesian Methods for Attribute-Controlled Symbolic Music Generation</title>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; }
-        img { max-width: 80%; height: auto; margin: 10px; }
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 80px;
+        }
+
+        .gamma-section {
+            margin-bottom: 40px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            justify-items: center;
+            margin-top: 10px;
+        }
+
+        .grid img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            padding: 4px;
+        }
+
+        .model-labels {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .caption {
+            text-align: center;
+            font-style: italic;
+            margin-top: 10px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
-    <h1>On the Joint Minimization of Regularization Loss Functions in Deep Variational Bayesian Methods for
-        Attribute-Controlled Symbolic Music Generation</h1>
-    <img src="plots/complexity/naive-vae/gamma 0.001/decoded_sequences_reg_latent_space.png" alt="Image 1">
-    <img src="plots/complexity/naive-vae/gamma 0.001/oa.png" alt="Image 2">
+
+<h1>Additional Material</h1>
+<p>This page contains the additional material for the paper <strong>On the Joint Minimization of Regularization Loss
+    Functions in Deep Variational Bayesian Methods for Attribute-Controlled Symbolic Music Generation</strong>,
+    submitted to <em><a href="https://eusipco2025.org/" target="_blank">EUSIPCO 2025</a></em>.</p>
+
+<!-- Rhythm Complexity -->
+<div class="section">
+    <h2>Rhythm Complexity</h2>
+
+    <!-- Gamma 0.001 -->
+    <div class="gamma-section">
+        <div class="model-labels">
+            <div>NM</div>
+            <div>P&L</div>
+            <div>PT</div>
+        </div>
+
+        <div class="grid">
+            <!-- Row 1: Plot 1 for NM, P&L, PT -->
+            <img src="plots/complexity/naive-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Rhythm Complexity - Gamma 0.001 - NM Decoded Sequences Plot">
+            <img src="plots/complexity/pl-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Rhythm Complexity - Gamma 0.001 - P&L Decoded Sequences Plot">
+            <img src="plots/complexity/pt-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Rhythm Complexity - Gamma 0.001 - PT Decoded Sequences Plot">
+            <!-- Row 2: Plot 2 for NM, P&L, PT -->
+            <img src="plots/complexity/naive-vae/gamma-0.001/oa.png" alt="Rhythm Complexity - Gamma 0.001 - NM OA Plot">
+            <img src="plots/complexity/pl-vae/gamma-0.001/oa.png" alt="Rhythm Complexity - Gamma 0.001 - P&L OA Plot">
+            <img src="plots/complexity/pt-vae/gamma-0.001/oa.png" alt="Rhythm Complexity - Gamma 0.001 - PT OA Plot">
+        </div>
+
+        <p class="caption"><strong>Rhythm Complexity</strong> attribute regularization with &beta; &rarr;
+            10<sup>-3</sup> and &gamma; = 10<sup>-3</sup></p>
+    </div>
+
+    <!-- Gamma 1.0 -->
+    <div class="gamma-section">
+        <div class="model-labels">
+            <div>NM</div>
+            <div>P&L</div>
+            <div>PT</div>
+        </div>
+
+        <div class="grid">
+            <!-- Row 1: Plot 1 for NM, P&L, PT -->
+            <img src="plots/complexity/naive-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Rhythm Complexity - Gamma 1.0 - NM Decoded Sequences Plot">
+            <img src="plots/complexity/pl-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Rhythm Complexity - Gamma 1.0 - P&L Decoded Sequences Plot">
+            <img src="plots/complexity/pt-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Rhythm Complexity - Gamma 1.0 - PT Decoded Sequences Plot">
+            <!-- Row 2: Plot 2 for NM, P&L, PT -->
+            <img src="plots/complexity/naive-vae/gamma-1.0/oa.png" alt="Rhythm Complexity - Gamma 1.0 - NM OA Plot">
+            <img src="plots/complexity/pl-vae/gamma-1.0/oa.png" alt="Rhythm Complexity - Gamma 1.0 - P&L OA Plot">
+            <img src="plots/complexity/pt-vae/gamma-1.0/oa.png" alt="Rhythm Complexity - Gamma 1.0 - PT OA Plot">
+        </div>
+
+        <p class="caption"><strong>Rhythm Complexity</strong> attribute regularization with &beta; &rarr;
+            10<sup>-3</sup> and &gamma; = 1</p>
+    </div>
+</div>
+
+<!-- Contour -->
+<div class="section">
+    <h2>Contour</h2>
+
+    <!-- Gamma 0.001 -->
+    <div class="gamma-section">
+        <div class="model-labels">
+            <div>NM</div>
+            <div>P&L</div>
+            <div>PT</div>
+        </div>
+
+        <div class="grid">
+            <!-- Row 1: Plot 1 for NM, P&L, PT -->
+            <img src="plots/contour/naive-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Contour - Gamma 0.001 - NM Decoded Sequences Plot">
+            <img src="plots/contour/pl-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Contour - Gamma 0.001 - P&L Decoded Sequences Plot">
+            <img src="plots/contour/pt-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Contour - Gamma 0.001 - PT Decoded Sequences Plot">
+            <!-- Row 2: Plot 2 for NM, P&L, PT -->
+            <img src="plots/contour/naive-vae/gamma-0.001/oa.png" alt="Contour - Gamma 0.001 - NM OA Plot">
+            <img src="plots/contour/pl-vae/gamma-0.001/oa.png" alt="Contour - Gamma 0.001 - P&L OA Plot">
+            <img src="plots/contour/pt-vae/gamma-0.001/oa.png" alt="Contour - Gamma 0.001 - PT OA Plot">
+        </div>
+
+        <p class="caption"><strong>Contour</strong> attribute regularization with &beta; &rarr;
+            10<sup>-3</sup> and &gamma; = 10<sup>-3</sup></p>
+    </div>
+
+    <!-- Gamma 1.0 -->
+    <div class="gamma-section">
+        <div class="model-labels">
+            <div>NM</div>
+            <div>P&L</div>
+            <div>PT</div>
+        </div>
+
+        <div class="grid">
+            <!-- Row 1: Plot 1 for NM, P&L, PT -->
+            <img src="plots/contour/naive-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Contour - Gamma 1.0 - NM Decoded Sequences Plot">
+            <img src="plots/contour/pl-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Contour - Gamma 1.0 - P&L Decoded Sequences Plot">
+            <img src="plots/contour/pt-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Contour - Gamma 1.0 - PT Decoded Sequences Plot">
+            <!-- Row 2: Plot 2 for NM, P&L, PT -->
+            <img src="plots/contour/naive-vae/gamma-1.0/oa.png" alt="Contour - Gamma 1.0 - NM OA Plot">
+            <img src="plots/contour/pl-vae/gamma-1.0/oa.png" alt="Contour - Gamma 1.0 - P&L OA Plot">
+            <img src="plots/contour/pt-vae/gamma-1.0/oa.png" alt="Contour - Gamma 1.0 - PT OA Plot">
+        </div>
+
+        <p class="caption"><strong>Contour</strong> attribute regularization with &beta; &rarr;
+            10<sup>-3</sup> and &gamma; = 1</p>
+    </div>
+</div>
+
+<!-- Pitch Range -->
+<div class="section">
+    <h2>Pitch Range</h2>
+
+    <!-- Gamma 0.001 -->
+    <div class="gamma-section">
+        <div class="model-labels">
+            <div>NM</div>
+            <div>P&L</div>
+            <div>PT</div>
+        </div>
+
+        <div class="grid">
+            <!-- Row 1: Plot 1 for NM, P&L, PT -->
+            <img src="plots/pitch-range/naive-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Pitch Range - Gamma 0.001 - NM Decoded Sequences Plot">
+            <img src="plots/pitch-range/pl-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Pitch Range - Gamma 0.001 - P&L Decoded Sequences Plot">
+            <img src="plots/pitch-range/pt-vae/gamma-0.001/decoded_sequences_reg_latent_space.png"
+                 alt="Pitch Range - Gamma 0.001 - PT Decoded Sequences Plot">
+            <!-- Row 2: Plot 2 for NM, P&L, PT -->
+            <img src="plots/pitch-range/naive-vae/gamma-0.001/oa.png" alt="Pitch Range - Gamma 0.001 - NM OA Plot">
+            <img src="plots/pitch-range/pl-vae/gamma-0.001/oa.png" alt="Pitch Range - Gamma 0.001 - P&L OA Plot">
+            <img src="plots/pitch-range/pt-vae/gamma-0.001/oa.png" alt="Pitch Range - Gamma 0.001 - PT OA Plot">
+        </div>
+
+        <p class="caption"><strong>Pitch Range</strong> attribute regularization with &beta; &rarr;
+            10<sup>-3</sup> and &gamma; = 10<sup>-3</sup></p>
+    </div>
+
+    <!-- Gamma 1.0 -->
+    <div class="gamma-section">
+        <div class="model-labels">
+            <div>NM</div>
+            <div>P&L</div>
+            <div>PT</div>
+        </div>
+
+        <div class="grid">
+            <!-- Row 1: Plot 1 for NM, P&L, PT -->
+            <img src="plots/pitch-range/naive-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Pitch Range - Gamma 1.0 - NM Decoded Sequences Plot">
+            <img src="plots/pitch-range/pl-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Pitch Range - Gamma 1.0 - P&L Decoded Sequences Plot">
+            <img src="plots/pitch-range/pt-vae/gamma-1.0/decoded_sequences_reg_latent_space.png"
+                 alt="Pitch Range - Gamma 1.0 - PT Decoded Sequences Plot">
+            <!-- Row 2: Plot 2 for NM, P&L, PT -->
+            <img src="plots/pitch-range/naive-vae/gamma-1.0/oa.png" alt="Pitch Range - Gamma 1.0 - NM OA Plot">
+            <img src="plots/pitch-range/pl-vae/gamma-1.0/oa.png" alt="Pitch Range - Gamma 1.0 - P&L OA Plot">
+            <img src="plots/pitch-range/pt-vae/gamma-1.0/oa.png" alt="Pitch Range - Gamma 1.0 - PT OA Plot">
+        </div>
+
+        <p class="caption"><strong>Pitch Range</strong> attribute regularization with &beta; &rarr;
+            10<sup>-3</sup> and &gamma; = 1</p>
+    </div>
+</div>
 </body>
 </html>
